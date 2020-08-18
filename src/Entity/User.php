@@ -26,6 +26,16 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $credit = 100;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isPremium = false;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -50,6 +60,42 @@ class User implements UserInterface
     {
         $this->email = $email;
 
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCredit(): int
+    {
+        return $this->credit;
+    }
+
+    /**
+     * @param int $credit
+     * @return User
+     */
+    public function setCredit(int $credit): self
+    {
+        $this->credit = $credit;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPremium(): bool
+    {
+        return $this->isPremium;
+    }
+
+    /**
+     * @param bool $isPremium
+     * @return User
+     */
+    public function setIsPremium(bool $isPremium): self
+    {
+        $this->isPremium = $isPremium;
         return $this;
     }
 
