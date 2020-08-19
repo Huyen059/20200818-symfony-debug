@@ -48,3 +48,25 @@ class BookingType extends AbstractType
         ]);
     }
 }
+
+
+/*------Laura datetime options----*/
+/*
+
+$builder
+            ->add('startdate', DateTimeType::class, [
+                'date_label' => 'Starts On',
+                'years'=> range(2020,2025),
+                'hours'=> range(9,17),
+                'minutes'=>[0,15,30,45]
+            ])
+            ->add('enddate', DateTimeType::class, [
+                'date_label' => 'Starts On',
+                'years'=> range(2020,2025),
+                'hours'=> range(9,17),
+                'minutes'=>[0,15,30,45]
+            ])
+            ->add('room')
+        ;
+
+ */

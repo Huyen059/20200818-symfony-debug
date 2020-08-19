@@ -99,11 +99,26 @@ class Room
         return $this;
     }
 
-    public function checkAvailability(User $user)
+    public function checkAvailability(User $user): bool
     {
-        if($user->getIsPremium() || !$this->getIsPremium()){
-            return true;
+        return $user->getIsPremium() || !$this->getIsPremium();
+    }
+
+    public function checkTimeAvailability($startDate, $endDate): bool
+    {
+        foreach ($this->bookings as $booking) {
+            /** @var Booking $booking */
+            $bookedStartDate = $booking->getStartDate();
+            $bookedEndDate = $booking->getEndDate();
+            if($startDate < $bookedStartDate && $endDate > $bookedStartDate) {
+                return false;
+            }
+
+            if($startDate > $bookedStartDate && $startDate < $bookedEndDate) {
+                return false;
+            }
         }
+        return true;
     }
 
     public function __toString()

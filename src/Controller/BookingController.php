@@ -46,6 +46,15 @@ class BookingController extends AbstractController
                 ]);
             }
 
+            if(!$booking->getRoom()->checkTimeAvailability($booking->getStartDate(), $booking->getEndDate())) {
+                $errorMessage = "The room is not available for the specified period.";
+                return $this->render('booking/new.html.twig', [
+                    'booking' => $booking,
+                    'form' => $form->createView(),
+                    'errorMessage' => $errorMessage
+                ]);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
             $entityManager->flush();
