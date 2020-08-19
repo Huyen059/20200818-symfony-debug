@@ -96,7 +96,7 @@ class User implements UserInterface
     /**
      * @return bool
      */
-    public function isPremium(): bool
+    public function getIsPremium(): bool
     {
         return $this->isPremium;
     }

@@ -98,4 +98,11 @@ class Room
 
         return $this;
     }
+
+    public function checkAvailability(User $user)
+    {
+        if($user->getIsPremium() || !$this->getIsPremium()){
+            return true;
+        }
+    }
 }
