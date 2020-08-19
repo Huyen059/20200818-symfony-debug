@@ -29,13 +29,15 @@ class BookingType extends AbstractType
 
         $builder
             ->add('startDate', DateTimeType::class, [
-                'data' => $startDate
+                'data' => $startDate,
+                'minutes' => [0, 15, 30, 45]
             ])
             ->add('endDate', DateTimeType::class, [
-                'data' => $endDate
+                'data' => $endDate,
+                'minutes' => [0, 15, 30, 45]
             ])
             ->add('room')
-            ->add('user')
+//            ->add('user')
         ;
     }
 

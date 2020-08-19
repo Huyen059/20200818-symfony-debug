@@ -37,3 +37,4 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/room, roles: ROLE_USER }
+         - { path: ^/booking, roles: ROLE_USER }

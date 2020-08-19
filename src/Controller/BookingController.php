@@ -31,10 +31,21 @@ class BookingController extends AbstractController
     public function new(Request $request): Response
     {
         $booking = new Booking();
+        $user = $this->getUser();
+        $booking->setUser($user);
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if(!$booking->getRoom()->checkAvailability($booking->getUser())) {
+                $errorMessage = "You don't have permission to book this room.";
+                return $this->render('booking/new.html.twig', [
+                    'booking' => $booking,
+                    'form' => $form->createView(),
+                    'errorMessage' => $errorMessage
+                ]);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
             $entityManager->flush();

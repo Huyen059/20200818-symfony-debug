@@ -19,6 +19,18 @@
                 <th>IsPremium</th>
                 <td>{{ room.isPremium ? 'Yes' : 'No' }}</td>
             </tr>
+            <tr>
+                <th>Bookings</th>
+                <td>
+                    <ul>
+                    {% for booking in room.bookings %}
+                        <li>{{ booking.startDate|format_datetime(pattern='dd/MM/Y HH:mm') }} - {{ booking.endDate|format_datetime(pattern='dd/MM/Y HH:mm') }}</li>
+                    {% else %}
+                    No booking yet.
+                    {% endfor %}
+                    </ul>
+                </td>
+            </tr>
         </tbody>
     </table>
 
