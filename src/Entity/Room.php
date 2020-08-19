@@ -44,7 +44,7 @@ class Room
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -104,5 +104,10 @@ class Room
         if($user->getIsPremium() || !$this->getIsPremium()){
             return true;
         }
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 }
