@@ -203,6 +203,11 @@ class User implements UserInterface
         return $this;
     }
 
+    public function checkCredit(): bool
+    {
+        return $this->credit >= Room::RENT;
+    }
+
     public function __toString()
     {
         return $this->getUsername();

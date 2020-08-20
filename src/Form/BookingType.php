@@ -56,6 +56,7 @@ class BookingType extends AbstractType
 
 /*------Laura datetime options----*/
 /*
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 $builder
             ->add('startdate', DateTimeType::class, [

@@ -16,8 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BookingController extends AbstractController
 {
-    public const RENT = 2;
-
     /**
      * @Route("/", name="booking_index", methods={"GET"})
      */
@@ -76,12 +74,21 @@ class BookingController extends AbstractController
                 ]);
             }
 
-            $booking->getUser()->setCredit($booking->getUser()->getCredit() - self::RENT);
+            if(!$booking->getUser()->checkCredit()) {
+                $errorMessage = "You don't have enough credit.";
+                return $this->render('booking/new.html.twig', [
+                    'booking' => $booking,
+                    'form' => $form->createView(),
+                    'errorMessage' => $errorMessage
+                ]);
+            }
+
+            $booking->getUser()->setCredit($booking->getUser()->getCredit() - Room::RENT);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
             $entityManager->flush();
 
-            return $this->redirectToRoute('booking_index');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('booking/new.html.twig', [

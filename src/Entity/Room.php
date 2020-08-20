@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Room
 {
+    public const RENT = 2;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
