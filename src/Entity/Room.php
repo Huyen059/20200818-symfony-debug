@@ -104,7 +104,7 @@ class Room
         return $user->getIsPremium() || !$this->getIsPremium();
     }
 
-    public function checkTimeAvailability($startDate, $endDate): bool
+    public function checkTimeAvailability(\DateTimeInterface $startDate,\DateTimeInterface $endDate): bool
     {
         foreach ($this->bookings as $booking) {
             /** @var Booking $booking */
@@ -121,7 +121,7 @@ class Room
         return true;
     }
 
-    public function checkDuration(\DateTime $start,\DateTime $end): bool
+    public function checkDuration(\DateTimeInterface $start,\DateTimeInterface $end): bool
     {
         return $start->add(new \DateInterval('PT4H')) >= $end;
     }

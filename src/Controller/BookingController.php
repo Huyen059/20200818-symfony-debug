@@ -3,18 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Booking;
+use App\Entity\Room;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
 /**
  * @Route("/booking")
  */
 class BookingController extends AbstractController
 {
+    public const RENT = 2;
+
     /**
      * @Route("/", name="booking_index", methods={"GET"})
      */
@@ -28,7 +31,7 @@ class BookingController extends AbstractController
     /**
      * @Route("/new", name="booking_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, SessionInterface $session): Response
     {
         $booking = new Booking();
         $user = $this->getUser();
@@ -37,6 +40,15 @@ class BookingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if($booking->getStartDate() < new \DateTime() || $booking->getEndDate() < $booking->getStartDate()) {
+                $errorMessage = "Please check your booking details. Start date can't be set in the past and end date can't be earlier than start date.";
+                return $this->render('booking/new.html.twig', [
+                    'booking' => $booking,
+                    'form' => $form->createView(),
+                    'errorMessage' => $errorMessage
+                ]);
+            }
+
             if(!$booking->getRoom()->checkAvailability($booking->getUser())) {
                 $errorMessage = "You don't have permission to book this room.";
                 return $this->render('booking/new.html.twig', [
@@ -64,6 +76,7 @@ class BookingController extends AbstractController
                 ]);
             }
 
+            $booking->getUser()->setCredit($booking->getUser()->getCredit() - self::RENT);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
             $entityManager->flush();

@@ -15,7 +15,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>IsPremium</th>
-            <th>Action</th>
+            <th>Bookings</th>
         </tr>
         </thead>
         <tbody>
@@ -25,9 +25,13 @@
                 <td>{{ room.name }}</td>
                 <td>{{ room.isPremium ? 'Yes' : 'No' }}</td>
                 <td>
-                    <form action="" method="post">
-                        <button type="submit" name="book" value="{{ room.id }}">Book</button>
-                    </form>
+                    <ul>
+                        {% for booking in room.bookings %}
+                            <li>{{ booking.startDate|format_datetime(pattern='dd/MM/Y HH:mm') }} - {{ booking.endDate|format_datetime(pattern='dd/MM/Y HH:mm') }}</li>
+                        {% else %}
+                            No booking yet.
+                        {% endfor %}
+                    </ul>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +41,8 @@
         {% endfor %}
         </tbody>
     </table>
+    <form action="{{ path('booking_new') }}" method="post">
+        <button type="submit" name="book">Book a room</button>
+    </form>
 </div>
 {% endblock %}

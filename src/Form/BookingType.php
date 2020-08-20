@@ -30,10 +30,14 @@ class BookingType extends AbstractType
         $builder
             ->add('startDate', DateTimeType::class, [
                 'data' => $startDate,
+                'years' => range(2020, 2021),
+                'hours' => range(9, 18),
                 'minutes' => [0, 15, 30, 45]
             ])
             ->add('endDate', DateTimeType::class, [
                 'data' => $endDate,
+                'years' => range(2020, 2021),
+                'hours' => range($startDate->format('H'), 18),
                 'minutes' => [0, 15, 30, 45]
             ])
             ->add('room')
@@ -44,7 +48,7 @@ class BookingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Booking::class,
+            'data_class' => Booking::class
         ]);
     }
 }
