@@ -3,24 +3,48 @@
 {% block title %}Hello HomepageController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
 
-    <div class="row">
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    User ID: {{ user.id }}
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="d-flex flex-column">
+        <div class="my-5">
+            {% if user.id %}
+                <div class="card">
+                    <div class="card-header">
+                        User ID: {{ user.id }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Your available credit: {{ user.credit }}</h5>
+                        <a href="{{ path('add_credit') }}" class="btn btn-primary">Add credit</a>
+                        <form class="d-inline ml-4" action="{{ path('booking_new') }}" method="post">
+                            <button type="submit" name="book" class="btn btn-info">Book a room</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">Your available credit: {{ user.credit }}</h5>
-                    <a href="{{ path('add_credit') }}" class="btn btn-primary">Add credit</a>
+            {% else %}
+                <div class="card">
+                    <div class="card-header">
+                        Hello guest
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Please log in to book a room.</p>
+                        <a href="{{ path('app_login') }}" class="btn btn-primary">Log in</a>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
-        <div class="col-8">
+        <div >
             <h3>Available rooms</h3>
             <table class="table">
                 <thead>
@@ -40,7 +64,22 @@
                         <td>
                             <ul>
                                 {% for booking in room.bookings %}
-                                    <li>{{ booking.startDate|format_datetime(pattern='dd/MM/Y HH:mm') }} - {{ booking.endDate|format_datetime(pattern='dd/MM/Y HH:mm') }}</li>
+                                    <li class="mb-2 d-flex justify-content-between">
+                                        <div>
+                                            {{ booking.startDate|format_datetime(pattern='dd/MM/Y HH:mm') }}
+                                            - {{ booking.endDate|format_datetime(pattern='dd/MM/Y HH:mm') }}
+                                            | By user
+                                            ID {{ booking.user.id }}
+
+                                            {% if user.id == booking.user.id %}
+                                        </div>
+                                        <div>
+                                            <form action="{{ path('booking_edit', {'id': booking.id}) }}" method="post">
+                                                <button class="btn btn-warning">Edit</button>
+                                            </form>
+                                        </div>
+                                        {% endif %}
+                                    </li>
                                 {% else %}
                                     No booking yet.
                                 {% endfor %}
@@ -54,9 +93,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <form action="{{ path('booking_new') }}" method="post">
-                <button type="submit" name="book">Book a room</button>
-            </form>
         </div>
     </div>
 

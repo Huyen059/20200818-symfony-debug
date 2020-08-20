@@ -108,7 +108,7 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="booking_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="booking_edit", methods={"POST"})
      */
     public function edit(Request $request, Booking $booking): Response
     {
@@ -138,6 +138,6 @@ class BookingController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('booking_index');
+        return $this->redirectToRoute('homepage');
     }
 }

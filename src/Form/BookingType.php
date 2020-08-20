@@ -12,32 +12,32 @@ class BookingType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $start = \DateTime::createFromFormat('H:i', '09:00');
-        $end = \DateTime::createFromFormat('H:i', '18:00');
-        $now = new \DateTime();
-
-        if($now < $start) {
-            $startDate = $start;
-            $endDate = $end;
-        } elseif ($now >= $start && $now <= $end) {
-            $startDate = $now;
-            $endDate = $end;
-        } elseif ($now > $end) {
-            $startDate = $start->add(new \DateInterval('P1D'));
-            $endDate = $end->add(new \DateInterval('P1D'));
-        }
+//        $start = \DateTime::createFromFormat('H:i', '09:00');
+//        $end = \DateTime::createFromFormat('H:i', '18:00');
+//        $now = new \DateTime();
+//
+//        if($now < $start) {
+//            $startDate = $start;
+//            $endDate = $end;
+//        } elseif ($now >= $start && $now <= $end) {
+//            $startDate = $now;
+//            $endDate = $end;
+//        } elseif ($now > $end) {
+//            $startDate = $start->add(new \DateInterval('P1D'));
+//            $endDate = $end->add(new \DateInterval('P1D'));
+//        }
 
         $builder
             ->add('startDate', DateTimeType::class, [
-                'data' => $startDate,
+//                'data' => $startDate,
                 'years' => range(2020, 2021),
                 'hours' => range(9, 18),
                 'minutes' => [0, 15, 30, 45]
             ])
             ->add('endDate', DateTimeType::class, [
-                'data' => $endDate,
+//                'data' => $endDate,
                 'years' => range(2020, 2021),
-                'hours' => range($startDate->format('H'), 18),
+                'hours' => range(9, 18),
                 'minutes' => [0, 15, 30, 45]
             ])
             ->add('room')

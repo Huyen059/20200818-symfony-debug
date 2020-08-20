@@ -124,7 +124,9 @@ class Room
 
     public function checkDuration(\DateTimeInterface $start,\DateTimeInterface $end): bool
     {
-        return $start->add(new \DateInterval('PT4H')) >= $end;
+        $startDateAsString = $start->format('d/m/y h:i');
+        $maxEndDate = \DateTime::createFromFormat('d/m/y h:i', $startDateAsString)->add(new \DateInterval('PT4H'));
+        return $end <= $maxEndDate;
     }
 
     public function __toString()
