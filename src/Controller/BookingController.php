@@ -55,6 +55,15 @@ class BookingController extends AbstractController
                 ]);
             }
 
+            if(!$booking->getRoom()->checkDuration($booking->getStartDate(), $booking->getEndDate())) {
+                $errorMessage = "Booking period can't be longer than 4 hours.";
+                return $this->render('booking/new.html.twig', [
+                    'booking' => $booking,
+                    'form' => $form->createView(),
+                    'errorMessage' => $errorMessage
+                ]);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
             $entityManager->flush();

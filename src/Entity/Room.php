@@ -121,6 +121,11 @@ class Room
         return true;
     }
 
+    public function checkDuration(\DateTime $start,\DateTime $end): bool
+    {
+        return $start->add(new \DateInterval('PT4H')) >= $end;
+    }
+
     public function __toString()
     {
         return $this->getName();
